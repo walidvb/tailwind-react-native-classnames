@@ -25,6 +25,9 @@ export function parseNumericValue(
   }
 
   const match = value.match(/(([a-z]{2,}|%))$/);
+  if(context.absolute){
+    return [number, Unit.absolute]
+  }
   if (!match) {
     return [number, Unit.none];
   }
@@ -214,7 +217,7 @@ function unconfiggedStyleVal(
     number = number / 4;
     unit = Unit.rem;
   }
-
+  console.log(value, number, parsed, context)
   return toStyleVal(number, unit, context);
 }
 

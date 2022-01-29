@@ -56,6 +56,7 @@ export interface DeviceContext {
 export interface ParseContext {
   isNegative?: boolean;
   fractions?: boolean;
+  absolute?: boolean
   device?: DeviceContext;
 }
 
@@ -82,8 +83,14 @@ export type Direction =
   | 'BottomLeft'
   | 'BottomRight';
 
+export type TransformType = 'rotate'
+
+type TransformStyle = {
+  [key in TransformType]?: string[] | string | number | boolean | Style;
+}[]
+
 export type Style = {
-  [key: string]: string[] | string | number | boolean | Style;
+  [key: string]: string[] | string | number | boolean | Style | TransformStyle;
 };
 
 export enum ConfigType {
@@ -126,6 +133,7 @@ export enum Unit {
   vw = `vw`,
   vh = `vh`,
   none = `<no-css-unit>`,
+  absolute = '<absolute>',
 }
 
 type NotImplemented = (...args: any) => unknown;
