@@ -39,6 +39,7 @@ export interface TwTheme {
   borderColor?: TwColors;
   textColor?: TwColors;
   extend?: Omit<TwTheme, 'extend'>;
+  transform?: Record<'transform', Record<string, number | string>>;
 }
 
 export interface TwConfig {
