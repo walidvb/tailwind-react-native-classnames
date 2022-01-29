@@ -85,13 +85,19 @@ export type Direction =
 
 export type TransformType = 'rotate'
 
-type TransformStyle = {
-  [key in TransformType]?: string[] | string | number | boolean | Style;
-}[]
+export type TransformProperty = {
+  [key in TransformType]: string | number | boolean | Style;
+}
+
+export type TransformStyle = {
+  kind: 'transform'; 
+} & TransformProperty
 
 export type Style = {
-  [key: string]: string[] | string | number | boolean | Style | TransformStyle;
-};
+  [key: string]: string[] | string | number | boolean | Style;
+} & {
+  transform?: TransformProperty[]
+}
 
 export enum ConfigType {
   fontSize = `fontSize`,
@@ -123,7 +129,7 @@ export type DependentStyle = {
  * that may, or may not require some post-processing,
  * merging with other styles, etc.
  */
-export type StyleIR = NullStyle | OrderedStyle | DependentStyle | CompleteStyle;
+export type StyleIR = NullStyle | OrderedStyle | DependentStyle | CompleteStyle | TransformStyle;
 
 export enum Unit {
   rem = `rem`,

@@ -1,7 +1,12 @@
+import { TransformStyle, TransformProperty } from './types';
 import { Unit, Style, Direction, CompleteStyle, ParseContext } from './types';
 
 export function complete(style: Style): CompleteStyle {
   return { kind: `complete`, style };
+}
+
+export function transformStyle(style: TransformProperty): TransformStyle {
+  return { kind: `transform`, ...style };
 }
 
 export function parseNumericValue(

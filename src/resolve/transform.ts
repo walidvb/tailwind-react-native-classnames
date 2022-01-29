@@ -1,6 +1,6 @@
 import { TwTheme } from '../tw-config';
 import { StyleIR, TransformType } from '../types';
-import { complete, parseStyleVal, parseUnconfigged } from '../helpers';
+import { transformStyle, parseStyleVal, parseUnconfigged } from '../helpers';
 
 type InsetDir = null | 'x' | 'y';
 
@@ -20,38 +20,7 @@ export function transform(
   //   }
   // }
 
-  const unconfigged = parseUnconfigged(value, { isNegative, absolute: true });
-  console.log("unconfigged", unconfigged)
-  if (unconfigged !== null) {
-    return insetStyle(type, insetDir, unconfigged);
-  }
-
-  return null;
-}
-
-function insetStyle(type: TransformType, dir: InsetDir, styleVal: string | number): StyleIR {
-  if (type !== `rotate`) {
-    return complete({ [type]: styleVal });
-    return complete({ transform: [{ [type]: styleVal }] });
-  }
-
-  switch (dir) {
-    case null:
-      return complete({
-        top: styleVal,
-        left: styleVal,
-        right: styleVal,
-        bottom: styleVal,
-      });
-    case `y`:
-      return complete({
-        top: styleVal,
-        bottom: styleVal,
-      });
-    case `x`:
-      return complete({
-        left: styleVal,
-        right: styleVal,
-      });
-  }
+  return transformStyle({
+    rotate: `${isNegative ? '-' : ''}${value}deg`
+  })
 }
