@@ -90,14 +90,15 @@ export type TransformProperty = {
 }
 
 export type TransformStyle = {
-  kind: 'transform'; 
+  kind: 'transform';
 } & TransformProperty
 
 export type Style = {
-  [key: string]: string[] | string | number | boolean | Style;
-} & {
-  transform?: TransformProperty[]
-}
+  [key: string]: string[] | string | number | boolean | Style | TransformProperty[];
+} 
+// & {
+//   transform?: TransformProperty[]
+// }
 
 export enum ConfigType {
   fontSize = `fontSize`,

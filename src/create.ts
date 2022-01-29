@@ -136,7 +136,20 @@ export function create(customConfig: TwConfig, platform: Platform): TailwindFn {
       removeOpacityHelpers(resolved);
     }
     if(transform){
-      console.log(transform)
+      
+      const pastTransforms = resolved.transform || [];
+      resolved = {
+        ...resolved,
+        // @ts-ignore
+        transform: transform.reduce((memo, val) => {
+          return [
+            ...memo,
+            // this needs to be more generic,
+            // although the tailwind API is rotate, while css requires rotateX(TBC)
+            { rotateX: val.rotate}
+          ]
+        } , [])
+      }
     }
     // cache the full set of classes for future re-renders
     // it's important we cache BEFORE merging in userStyle below

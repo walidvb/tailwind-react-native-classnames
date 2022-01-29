@@ -8,9 +8,8 @@ export function transform(
   type: TransformType,
   value: string,
   isNegative: boolean,
-  config?: TwTheme['inset'],
+  // config?: TwTheme['inset'],
 ): StyleIR | null {
-  let insetDir: InsetDir = null;
 
   // const configValue = config?.[value];
   // if (configValue) {
