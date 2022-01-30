@@ -1,7 +1,12 @@
+import { TransformStyle, TransformProperty } from './types';
 import { Unit, Style, Direction, CompleteStyle, ParseContext } from './types';
 
 export function complete(style: Style): CompleteStyle {
   return { kind: `complete`, style };
+}
+
+export function transformStyle(style: TransformProperty): TransformStyle {
+  return { kind: `transform`, ...style };
 }
 
 export function parseNumericValue(
@@ -25,6 +30,9 @@ export function parseNumericValue(
   }
 
   const match = value.match(/(([a-z]{2,}|%))$/);
+  if(context.absolute){
+    return [number, Unit.absolute]
+  }
   if (!match) {
     return [number, Unit.none];
   }
@@ -214,7 +222,7 @@ function unconfiggedStyleVal(
     number = number / 4;
     unit = Unit.rem;
   }
-
+  console.log(value, number, parsed, context)
   return toStyleVal(number, unit, context);
 }
 

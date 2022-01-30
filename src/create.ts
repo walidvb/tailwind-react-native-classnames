@@ -9,6 +9,7 @@ import {
   StyleIR,
   DeviceContext,
   Platform,
+  TransformStyle,
 } from './types';
 import { TwConfig } from './tw-config';
 import Cache from './cache';
@@ -67,6 +68,7 @@ export function create(customConfig: TwConfig, platform: Platform): TailwindFn {
     let resolved: Style = {};
     const dependents: DependentStyle[] = [];
     const ordered: OrderedStyle[] = [];
+    const transform: TransformStyle[] = [];
     const [utilities, userStyle] = parseInputs(inputs);
 
     // check if we've seen this full set of classes before
@@ -101,6 +103,9 @@ export function create(customConfig: TwConfig, platform: Platform): TailwindFn {
         case `ordered`:
           ordered.push(styleIr);
           break;
+        case `transform`:
+          transform.push(styleIr);
+          break;
         case `null`:
           cache.setIr(utility, styleIr);
           break;
@@ -130,7 +135,22 @@ export function create(customConfig: TwConfig, platform: Platform): TailwindFn {
       }
       removeOpacityHelpers(resolved);
     }
-
+    if(transform){
+      
+      const pastTransforms = resolved.transform || [];
+      resolved = {
+        ...resolved,
+        // @ts-ignore
+        transform: transform.reduce((memo, val) => {
+          return [
+            ...memo,
+            // this needs to be more generic,
+            // although the tailwind API is rotate, while css requires rotateX(TBC)
+            { rotateX: val.rotate}
+          ]
+        } , [])
+      }
+    }
     // cache the full set of classes for future re-renders
     // it's important we cache BEFORE merging in userStyle below
     if (joined !== ``) {

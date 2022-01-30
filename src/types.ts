@@ -56,6 +56,7 @@ export interface DeviceContext {
 export interface ParseContext {
   isNegative?: boolean;
   fractions?: boolean;
+  absolute?: boolean
   device?: DeviceContext;
 }
 
@@ -82,9 +83,22 @@ export type Direction =
   | 'BottomLeft'
   | 'BottomRight';
 
+export type TransformType = 'rotate'
+
+export type TransformProperty = {
+  [key in TransformType]: string | number | boolean | Style;
+}
+
+export type TransformStyle = {
+  kind: 'transform';
+} & TransformProperty
+
 export type Style = {
-  [key: string]: string[] | string | number | boolean | Style;
-};
+  [key: string]: string[] | string | number | boolean | Style | TransformProperty[];
+} 
+// & {
+//   transform?: TransformProperty[]
+// }
 
 export enum ConfigType {
   fontSize = `fontSize`,
@@ -116,7 +130,7 @@ export type DependentStyle = {
  * that may, or may not require some post-processing,
  * merging with other styles, etc.
  */
-export type StyleIR = NullStyle | OrderedStyle | DependentStyle | CompleteStyle;
+export type StyleIR = NullStyle | OrderedStyle | DependentStyle | CompleteStyle | TransformStyle;
 
 export enum Unit {
   rem = `rem`,
@@ -126,6 +140,7 @@ export enum Unit {
   vw = `vw`,
   vh = `vh`,
   none = `<no-css-unit>`,
+  absolute = '<absolute>',
 }
 
 type NotImplemented = (...args: any) => unknown;

@@ -28,6 +28,7 @@ import { widthHeight, minMaxWidthHeight } from './resolve/width-height';
 import { letterSpacing } from './resolve/letter-spacing';
 import { opacity } from './resolve/opacity';
 import { shadowOpacity, shadowOffset } from './resolve/shadow';
+import { transform } from './resolve/transform';
 import Cache from './cache';
 
 export default class ClassParser {
@@ -287,6 +288,7 @@ export default class ClassParser {
       if (style) return style;
     }
 
+
     if (this.consumePeeked(`shadow-offset-`)) {
       style = shadowOffset(this.rest);
       if (style) return style;
@@ -311,6 +313,11 @@ export default class ClassParser {
 
     if (this.consumePeeked(`opacity-`)) {
       style = opacity(this.rest, theme?.opacity);
+      if (style) return style;
+    }
+
+    if (this.consumePeeked(`rotate-`)) {
+      style = transform(`rotate`, this.rest, this.isNegative);
       if (style) return style;
     }
 
